@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>N3XRA | Software, Projects, Systems</title>
-  <meta name="description" content="N3XRA is the home for records software at N3XRA.com and selected project systems built by Quentin Nichols." />
+  <meta name="description" content="N3XRA is the home for records software at n3xra.com and selected project systems built by Quentin Nichols." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://n3xra.co/" />
   <meta property="og:type" content="website" />
@@ -56,6 +56,9 @@
       color: var(--ink);
       background: var(--paper);
       line-height: 1.55;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
     }
 
     a {
@@ -185,6 +188,7 @@
 
     main {
       display: grid;
+      flex: 1;
     }
 
     .software-band {
@@ -228,74 +232,91 @@
       font-size: 1.03rem;
     }
 
-    .software-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-      gap: 1rem;
-      align-items: stretch;
-    }
-
-    .software-callout,
-    .feature {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: #fff;
-      box-shadow: 0 18px 48px rgba(11, 16, 22, 0.08);
-    }
-
-    .software-callout {
-      padding: clamp(1.4rem, 3vw, 2rem);
-      display: grid;
-      align-content: end;
-      min-height: 320px;
+    .software-panel {
+      border-radius: 22px;
+      border: 1px solid rgba(63, 140, 255, 0.28);
+      padding: clamp(1.2rem, 3vw, 2.4rem);
       color: #fff;
       background:
-        linear-gradient(180deg, rgba(7, 12, 18, 0.14), rgba(7, 12, 18, 0.9)),
-        url("./projects/assets/recordsapppicture.png") center / cover no-repeat;
-      overflow: hidden;
-    }
-
-    .software-callout h3 {
-      font-size: clamp(1.6rem, 3vw, 2.5rem);
-    }
-
-    .software-callout p {
-      margin: 0.55rem 0 0;
-      max-width: 42ch;
-      color: rgba(255, 255, 255, 0.76);
-    }
-
-    .feature-grid {
+        url("./assets/MAINLOGO.png") right 7% center / min(430px, 35vw) no-repeat,
+        radial-gradient(circle at 16% 10%, rgba(34, 138, 255, 0.2), transparent 22rem),
+        radial-gradient(circle at 85% 20%, rgba(27, 90, 191, 0.16), transparent 20rem),
+        linear-gradient(180deg, #050d1a 0%, #01060f 100%);
+      box-shadow: 0 28px 72px rgba(1, 8, 20, 0.45);
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
+      gap: 1.3rem;
     }
 
-    .feature {
-      padding: 1.1rem;
-      min-height: 180px;
+    .software-lede {
       display: grid;
-      align-content: start;
-      gap: 0.55rem;
+      gap: 0.8rem;
+      max-width: 22ch;
     }
 
-    .feature span {
+    .software-lede h3 {
+      margin: 0;
+      font-size: clamp(1.9rem, 5vw, 3.4rem);
+      line-height: 1.05;
+      color: #f7fbff;
+    }
+
+    .software-lede strong {
+      color: #22aeff;
+      font-weight: 800;
+    }
+
+    .software-lede p {
+      margin: 0;
+      color: rgba(229, 242, 255, 0.86);
+      max-width: 58ch;
+      font-size: 1.06rem;
+    }
+
+    .software-features {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid rgba(112, 176, 255, 0.16);
+      padding-top: 1rem;
+    }
+
+    .software-feature {
+      padding: 0.45rem 1rem;
+      display: grid;
+      gap: 0.42rem;
+    }
+
+    .software-feature + .software-feature {
+      border-left: 1px solid rgba(112, 176, 255, 0.18);
+    }
+
+    .software-feature h4 {
+      margin: 0;
+      font-size: 1.05rem;
+      color: #f1f8ff;
+    }
+
+    .software-feature p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: rgba(203, 221, 238, 0.88);
+    }
+
+    .software-cta {
       width: fit-content;
-      color: var(--green);
-      font-size: 0.72rem;
+      min-height: 50px;
+      padding: 0.72rem 1.3rem;
+      border-radius: 999px;
+      border: 1px solid rgba(66, 161, 255, 0.64);
+      color: #4fb7ff;
+      text-decoration: none;
+      font-size: 0.84rem;
       font-weight: 800;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-    }
-
-    .feature h3 {
-      font-size: 1.15rem;
-    }
-
-    .feature p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.94rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(17, 45, 87, 0.18);
     }
 
     .projects-band {
@@ -309,6 +330,10 @@
 
     .projects-band .section-head .eyebrow {
       color: #98e9ff;
+    }
+
+    .software-band .section-head .eyebrow {
+      color: #0b1016;
     }
 
     .project-strip {
@@ -413,6 +438,10 @@
       border-color: var(--line);
     }
 
+    .closing .eyebrow {
+      color: #0b1016;
+    }
+
     .site-footer {
       padding: 1.35rem 0;
       color: rgba(255, 255, 255, 0.58);
@@ -439,9 +468,32 @@
     }
 
     @media (max-width: 900px) {
-      .software-grid,
-      .feature-grid {
+      .software-panel {
+        background:
+          radial-gradient(circle at 16% 10%, rgba(34, 138, 255, 0.2), transparent 22rem),
+          radial-gradient(circle at 85% 20%, rgba(27, 90, 191, 0.16), transparent 20rem),
+          linear-gradient(180deg, #050d1a 0%, #01060f 100%);
+      }
+
+      .software-lede {
+        max-width: 100%;
+        justify-items: center;
+        text-align: center;
+        padding-top: clamp(6rem, 22vw, 8.75rem);
+      }
+
+      .software-features {
         grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .software-feature + .software-feature {
+        border-left: 0;
+        border-top: 1px solid rgba(112, 176, 255, 0.18);
+      }
+
+      .software-cta {
+        justify-self: center;
       }
 
       .project-strip {
@@ -491,42 +543,39 @@
   </header>
 
   <main>
-    <section class="section software-band" aria-labelledby="software-title">
+    <section class="section software-band" aria-label="The software">
       <div class="section-inner">
-        <div class="section-head">
+        <div class="section-head center">
           <p class="eyebrow">The software</p>
-          <h2 id="software-title">N3XRA.com is built for records that should not disappear into folders.</h2>
-          <p class="section-copy">
-            Upload documents, keep them organized, search what matters, and give the right people access without turning every request into a manual hunt.
-          </p>
         </div>
 
-        <div class="software-grid">
-          <article class="software-callout">
-            <div>
-              <h3>Searchable records, clean access.</h3>
-              <p>Designed for organizations managing minutes, agendas, packets, internal files, and public-facing document collections.</p>
-            </div>
-          </article>
+        <article class="software-panel">
+          <div class="software-lede">
+            <h3>We saw an opportunity to make <strong>records management</strong> better and took the challenge.</h3>
+            <p>Now integrated across real projects, it is becoming a trusted system for teams that need clarity, structure, and control.</p>
+          </div>
 
-          <div class="feature-grid">
-            <article class="feature">
-              <span>Store</span>
-              <h3>Document libraries</h3>
-              <p>Keep recurring files in one place with account-based access.</p>
+          <div class="software-features" aria-label="Software capabilities">
+            <article class="software-feature">
+              <h4>Organize Records</h4>
+              <p>Keep everything in the right place.</p>
             </article>
-            <article class="feature">
-              <span>Find</span>
-              <h3>Fast search</h3>
-              <p>Turn old packets and records into something people can actually locate.</p>
+            <article class="software-feature">
+              <h4>Find What You Need</h4>
+              <p>Search fast. Work faster.</p>
             </article>
-            <article class="feature">
-              <span>Share</span>
-              <h3>Public views</h3>
-              <p>Publish what needs to be public while keeping private files controlled.</p>
+            <article class="software-feature">
+              <h4>Secure Access</h4>
+              <p>Right people. Right information.</p>
+            </article>
+            <article class="software-feature">
+              <h4>Built for Real Teams</h4>
+              <p>Designed for the way you work.</p>
             </article>
           </div>
-        </div>
+
+          <a class="software-cta" href="https://n3xra.com/">Manage With Confidence</a>
+        </article>
       </div>
     </section>
 
@@ -576,7 +625,7 @@
           <p class="eyebrow">Start here</p>
           <h2 id="closing-title">Choose the path that fits.</h2>
           <p class="section-copy">
-            Open the records software at N3XRA.com, or review the project folder to start a website, tool, automation, dashboard, or infrastructure build.
+            Open the records software at n3xra.com, or review the project folder to start a website, tool, automation, dashboard, or infrastructure build.
           </p>
           <div class="button-row">
             <a class="button button-primary" href="https://n3xra.com/">Open the software</a>
