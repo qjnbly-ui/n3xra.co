@@ -68,16 +68,12 @@
     }
 
     .site-hero {
-      min-height: 100svh;
       color: #fff;
       background:
         radial-gradient(circle at 50% -12%, rgba(40, 173, 255, 0.16), transparent 34rem),
         linear-gradient(180deg, #101012 0%, #050506 100%);
-      display: grid;
-      grid-template-rows: auto 1fr;
     }
 
-    .nav,
     .hero-inner,
     .section-inner,
     .footer-inner {
@@ -85,42 +81,6 @@
       margin: 0 auto;
     }
 
-    .nav {
-      min-height: 86px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 0.75rem 0;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      line-height: 0;
-    }
-
-    .brand img {
-      width: 132px;
-      height: auto;
-      object-fit: contain;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .nav-actions a,
     .button {
       min-height: 42px;
       display: inline-flex;
@@ -134,19 +94,12 @@
       border: 1px solid rgba(255, 255, 255, 0.24);
     }
 
-    .nav-actions a {
-      color: rgba(255, 255, 255, 0.78);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .nav-actions a:hover,
     .button:hover {
       transform: translateY(-1px);
     }
 
     .hero-inner {
-      min-height: calc(100svh - 74px);
-      padding: clamp(2.5rem, 7vw, 5.5rem) 0 clamp(3.5rem, 8vw, 6rem);
+      padding: clamp(1.2rem, 3vw, 2.2rem) 0 clamp(1.4rem, 3.5vw, 2.5rem);
       display: grid;
       place-items: center;
       text-align: center;
@@ -160,7 +113,7 @@
     }
 
     .hero-mark {
-      width: min(280px, 58vw);
+      width: min(460px, 78vw);
       filter:
         drop-shadow(0 0 28px rgba(22, 185, 237, 0.22))
         drop-shadow(0 32px 60px rgba(0, 0, 0, 0.35));
@@ -298,7 +251,7 @@
       color: #fff;
       background:
         linear-gradient(180deg, rgba(7, 12, 18, 0.14), rgba(7, 12, 18, 0.9)),
-        url("./assets/projects/recordsapppicture.png") center / cover no-repeat;
+        url("./projects/assets/recordsapppicture.png") center / cover no-repeat;
       overflow: hidden;
     }
 
@@ -379,8 +332,8 @@
 
     .project.availability {
       background:
-        radial-gradient(circle at 18% 18%, rgba(40, 173, 255, 0.28), transparent 18rem),
-        linear-gradient(145deg, #151821 0%, #0a0d12 100%);
+        linear-gradient(155deg, rgba(10, 20, 32, 0.78) 10%, rgba(2, 8, 14, 0.95) 100%),
+        url("./assets/MAINLOGO.png") center center / cover no-repeat;
     }
 
     .project img {
@@ -487,9 +440,12 @@
 
     @media (max-width: 900px) {
       .software-grid,
-      .feature-grid,
-      .project-strip {
+      .feature-grid {
         grid-template-columns: 1fr;
+      }
+
+      .project-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .project {
@@ -498,27 +454,6 @@
     }
 
     @media (max-width: 680px) {
-      .nav {
-        min-height: auto;
-        padding: 1rem 0;
-        align-items: center;
-      }
-
-      .brand span {
-        max-width: 9ch;
-        line-height: 1.1;
-      }
-
-      .nav-actions {
-        gap: 0.45rem;
-      }
-
-      .nav-actions a {
-        min-height: 38px;
-        padding: 0.54rem 0.72rem;
-        font-size: 0.78rem;
-      }
-
       h1 {
         font-size: clamp(2.6rem, 14vw, 4.2rem);
       }
@@ -548,19 +483,9 @@
 </head>
 <body>
   <header class="site-hero">
-    <nav class="nav" aria-label="Primary">
-      <a class="brand" href="https://n3xra.co/">
-        <img src="./assets/n3xra_logo_transparent.png" alt="N3XRA">
-      </a>
-      <div class="nav-actions">
-        <a href="https://n3xra.com/">Software</a>
-        <a href="https://quentinnichols.com/projects/">Projects</a>
-      </div>
-    </nav>
-
     <section class="hero-inner" aria-label="N3XRA">
       <div class="hero-copy">
-        <img class="hero-mark" src="./assets/n3xra_logo_transparent_small.png" alt="N3XRA">
+        <img class="hero-mark" src="./assets/n3xra_logo_transparent.png" alt="N3XRA">
       </div>
     </section>
   </header>
@@ -609,15 +534,15 @@
       <div class="section-inner">
         <div class="section-head center">
           <p class="eyebrow">Project systems</p>
-          <h2 id="projects-title">Built work outside the software.</h2>
+          <h2 id="projects-title">Custom websites and software.</h2>
           <p class="section-copy">
-            N3XRA also backs select websites, community platforms, automation, and internal tools shown in Quentin Nichols' projects folder.
+            Built by Quentin Nichols for community organizations, service businesses, and creator platforms.
           </p>
         </div>
 
         <div class="project-strip">
           <a class="project" href="https://ruthobenchainrc.com">
-            <img src="./assets/projects/RORCimage.png" alt="Ruth Obenchain Recreation Center website preview" loading="lazy" decoding="async">
+            <img src="./projects/assets/RORCimage.png" alt="Ruth Obenchain Recreation Center website preview" loading="lazy" decoding="async">
             <div class="project-body">
               <span>Community system</span>
               <h3>Ruth Obenchain Recreation Center</h3>
@@ -626,7 +551,7 @@
           </a>
 
           <a class="project" href="https://www.blyoregon.org">
-            <img src="./assets/projects/blyoregon.org.png" alt="blyoregon.org website preview" loading="lazy" decoding="async">
+            <img src="./projects/assets/blyoregon.org.png" alt="blyoregon.org website preview" loading="lazy" decoding="async">
             <div class="project-body">
               <span>Public information</span>
               <h3>blyoregon.org</h3>
@@ -634,11 +559,11 @@
             </div>
           </a>
 
-          <a class="project availability" href="https://quentinnichols.com/projects/">
+          <a class="project availability" href="/projects/">
             <div class="project-body">
               <span>Project availability</span>
-              <h3>Work With Me</h3>
-              <p>Custom websites, internal tools, automation systems, dashboards, tracking, setup, and infrastructure.</p>
+              <h3>View All Projects</h3>
+              <p>Explore active builds, published websites, and current implementation availability.</p>
             </div>
           </a>
         </div>
@@ -655,7 +580,7 @@
           </p>
           <div class="button-row">
             <a class="button button-primary" href="https://n3xra.com/">Open the software</a>
-            <a class="button button-ghost" href="https://quentinnichols.com/projects/">See the projects</a>
+            <a class="button button-ghost" href="/projects/">See the projects</a>
           </div>
         </div>
       </div>
