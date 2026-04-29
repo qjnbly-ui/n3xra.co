@@ -468,11 +468,9 @@
     }
 
     .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
+      display: grid;
+      gap: 0.6rem;
+      justify-items: center;
       font-size: 0.86rem;
       text-align: center;
     }
@@ -481,15 +479,8 @@
       margin: 0;
     }
 
-    .footer-links {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .footer-links a {
-      color: #ffffff;
+    .footer-inner a {
+      color: inherit;
       text-decoration: none;
       font-weight: 800;
     }
@@ -673,10 +664,8 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <div class="footer-links">
-        <a href="https://n3xra.com/">N3XRA.com</a>
-        <a href="https://quentinnichols.com/projects/">Projects</a>
-      </div>
+      <p>&copy; 2026 <strong>N3XRA LLC.</strong> All rights reserved.</p>
+      <p>Built by <a href="https://quentinnichols.com/">Quentin Nichols</a>.</p>
     </div>
   </footer>
 </body>
