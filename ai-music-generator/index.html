@@ -469,7 +469,9 @@
     const HISTORY_KEY = "n3xraSongHistory";
     const SONG_DRAFT_KEY = "n3xraMusicDraft";
     const ACTIVE_TASK_KEY = "n3xraActiveSongTask";
-    const GENERATION_LOCK_KEY = "n3xraMusicGenerated";
+    const GENERATION_COUNT_KEY = "n3xraMusicGenerationCount";
+    const LEGACY_GENERATION_LOCK_KEY = "n3xraMusicGenerated";
+    const GENERATION_LIMIT = 5;
 
     const form = document.getElementById("musicForm");
     const titleEl = document.getElementById("songTitle");
@@ -523,21 +525,39 @@
       generateBtn.textContent = isGenerating ? "Generating..." : "Generate Song";
     }
 
-    function hasGeneratedSong() {
-      return localStorage.getItem(GENERATION_LOCK_KEY) === "true";
+    function getGenerationCount() {
+      const storedCount = Number.parseInt(localStorage.getItem(GENERATION_COUNT_KEY) || "", 10);
+      if (Number.isFinite(storedCount) && storedCount > 0) {
+        return Math.min(storedCount, GENERATION_LIMIT);
+      }
+
+      return localStorage.getItem(LEGACY_GENERATION_LOCK_KEY) === "true" ? 1 : 0;
     }
 
-    function lockGeneration() {
-      localStorage.setItem(GENERATION_LOCK_KEY, "true");
+    function setGenerationCount(count) {
+      const parsedCount = Number.parseInt(count, 10);
+      const safeCount = Number.isFinite(parsedCount) ? Math.max(0, Math.min(parsedCount, GENERATION_LIMIT)) : 0;
+      localStorage.setItem(GENERATION_COUNT_KEY, String(safeCount));
+      localStorage.removeItem(LEGACY_GENERATION_LOCK_KEY);
     }
 
-    function applyGenerationLock() {
-      if (!hasGeneratedSong()) return;
+    function incrementGenerationCount() {
+      const nextCount = Math.min(getGenerationCount() + 1, GENERATION_LIMIT);
+      setGenerationCount(nextCount);
+      return nextCount;
+    }
+
+    function hasReachedGenerationLimit() {
+      return getGenerationCount() >= GENERATION_LIMIT;
+    }
+
+    function applyGenerationLimit() {
+      if (!hasReachedGenerationLimit()) return;
 
       generateBtn.disabled = true;
       generateBtn.removeAttribute("aria-busy");
-      generateBtn.textContent = "Generation Used";
-      statusEl.textContent = "This browser has already generated a song. Billing options are coming soon.";
+      generateBtn.textContent = "Limit Reached";
+      statusEl.textContent = "This browser has reached the temporary free limit of 5 songs. Billing options are coming soon.";
     }
 
     function updateFormState() {
@@ -601,7 +621,6 @@
     }
 
     function saveSongHistory(url, prompt, title = "") {
-      lockGeneration();
       const history = readJson(HISTORY_KEY, []);
       history.unshift({
         id: Date.now().toString(),
@@ -692,8 +711,8 @@
     }
 
     async function generateSong() {
-      if (hasGeneratedSong()) {
-        applyGenerationLock();
+      if (hasReachedGenerationLimit()) {
+        applyGenerationLimit();
         return;
       }
 
@@ -741,7 +760,7 @@
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-          if (response.status === 429) lockGeneration();
+          if (response.status === 429) setGenerationCount(GENERATION_LIMIT);
           throw new Error(getErrorMessage(data, "Generation request failed."));
         }
 
@@ -755,21 +774,21 @@
           title,
           startedAt: new Date().toISOString(),
         });
-        lockGeneration();
+        incrementGenerationCount();
 
         await pollStatus(data.task_id, prompt, title);
       } catch (error) {
         statusEl.textContent = error instanceof Error ? error.message : "Request failed.";
       } finally {
         setGenerating(false);
-        applyGenerationLock();
+        applyGenerationLimit();
       }
     }
 
     function resumeActiveTask() {
       const activeTask = readJson(ACTIVE_TASK_KEY, null);
       if (!activeTask?.taskId) {
-        applyGenerationLock();
+        applyGenerationLimit();
         return;
       }
 
@@ -781,7 +800,7 @@
         })
         .finally(() => {
           setGenerating(false);
-          applyGenerationLock();
+          applyGenerationLimit();
         });
     }
 
@@ -801,7 +820,7 @@
       hideResult();
       updateFormState();
       statusEl.textContent = "Fields cleared.";
-      applyGenerationLock();
+      applyGenerationLimit();
     });
 
     [titleEl, promptEl, tagsEl, lyricsEl].forEach((input) => {
@@ -820,7 +839,7 @@
       updateFormState();
       renderHistory();
       resumeActiveTask();
-      applyGenerationLock();
+      applyGenerationLimit();
     });
   </script>
 </body>

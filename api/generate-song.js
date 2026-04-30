@@ -18,6 +18,8 @@ function sendJson(res, status, body) {
 
 const generationLocks = globalThis.__n3xraMusicGenerationLocks || new Map();
 globalThis.__n3xraMusicGenerationLocks = generationLocks;
+const GENERATION_LIMIT = 5;
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 30;
 
 function getCookie(req, name) {
   const rawCookie = typeof req.headers.cookie === "string" ? req.headers.cookie : "";
@@ -46,17 +48,43 @@ function createBrowserId() {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
 }
 
-function setUsageCookies(res, browserId) {
+function parseUsageCount(value) {
+  const count = Number.parseInt(value, 10);
+  return Number.isFinite(count) && count > 0 ? count : 0;
+}
+
+function getCookieUsageCount(req) {
+  const count = parseUsageCount(getCookie(req, "n3xra_music_count"));
+  if (count > 0) return count;
+
+  return getCookie(req, "n3xra_music_used") === "true" ? 1 : 0;
+}
+
+function getLockRecordCount(key) {
+  const record = generationLocks.get(key);
+  if (!record) return 0;
+  if (typeof record === "number") return 1;
+  return parseUsageCount(record.count);
+}
+
+function setLockRecord(key, count, now) {
+  generationLocks.set(key, { count, updatedAt: now });
+}
+
+function setUsageCookies(res, browserId, count) {
+  const safeCount = Math.min(parseUsageCount(count), GENERATION_LIMIT);
   res.setHeader("Set-Cookie", [
-    `n3xra_music_browser=${encodeURIComponent(browserId)}; Path=/; Max-Age=2592000; SameSite=Lax; Secure`,
-    "n3xra_music_used=true; Path=/; Max-Age=2592000; SameSite=Lax; Secure",
+    `n3xra_music_browser=${encodeURIComponent(browserId)}; Path=/; Max-Age=${COOKIE_MAX_AGE}; SameSite=Lax; Secure`,
+    `n3xra_music_count=${encodeURIComponent(String(safeCount))}; Path=/; Max-Age=${COOKIE_MAX_AGE}; SameSite=Lax; Secure`,
+    "n3xra_music_used=; Path=/; Max-Age=0; SameSite=Lax; Secure",
   ]);
 }
 
 function pruneLocks(now) {
   const ttl = 1000 * 60 * 60 * 24 * 30;
   for (const [key, value] of generationLocks.entries()) {
-    if (now - value > ttl) generationLocks.delete(key);
+    const updatedAt = typeof value === "number" ? value : value.updatedAt;
+    if (!updatedAt || now - updatedAt > ttl) generationLocks.delete(key);
   }
 }
 
@@ -79,10 +107,16 @@ module.exports = async function handler(req, res) {
 
   const browserKey = `browser:${browserId}`;
   const ipKey = `ip:${getClientIp(req)}`;
-  if (getCookie(req, "n3xra_music_used") === "true" || generationLocks.has(browserKey) || generationLocks.has(ipKey)) {
-    setUsageCookies(res, browserId);
+  const usageCount = Math.max(
+    getCookieUsageCount(req),
+    getLockRecordCount(browserKey),
+    getLockRecordCount(ipKey),
+  );
+
+  if (usageCount >= GENERATION_LIMIT) {
+    setUsageCookies(res, browserId, usageCount);
     return sendJson(res, 429, {
-      error: "This browser has already generated a song. Billing options are coming soon.",
+      error: "This browser has reached the temporary free limit of 5 songs. Billing options are coming soon.",
     });
   }
 
@@ -119,9 +153,10 @@ module.exports = async function handler(req, res) {
 
     const data = await response.json().catch(() => ({}));
     if (response.ok && data.task_id) {
-      generationLocks.set(browserKey, now);
-      generationLocks.set(ipKey, now);
-      setUsageCookies(res, browserId);
+      const nextUsageCount = Math.min(usageCount + 1, GENERATION_LIMIT);
+      setLockRecord(browserKey, nextUsageCount, now);
+      setLockRecord(ipKey, nextUsageCount, now);
+      setUsageCookies(res, browserId, nextUsageCount);
     }
 
     return sendJson(res, response.status, data);
