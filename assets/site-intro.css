@@ -1,0 +1,70 @@
+.entry-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  place-items: center;
+  pointer-events: none;
+  color: #fff;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 50% -12%, rgba(40, 173, 255, 0.16), transparent 34rem),
+    linear-gradient(180deg, #101012 0%, #050506 100%);
+}
+
+.entry-splash img {
+  width: min(520px, 82vw);
+  filter:
+    drop-shadow(0 0 28px rgba(22, 185, 237, 0.22))
+    drop-shadow(0 32px 60px rgba(0, 0, 0, 0.35));
+}
+
+.entry-splash.is-active {
+  display: grid;
+  animation: entry-splash-fade 3.4s ease forwards;
+}
+
+.entry-splash.is-active img {
+  animation: entry-splash-logo 3.4s ease forwards;
+}
+
+.entry-splash.is-hidden {
+  display: none;
+}
+
+@keyframes entry-splash-fade {
+  0%,
+  48% {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes entry-splash-logo {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  18%,
+  55% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entry-splash {
+    display: none;
+  }
+}

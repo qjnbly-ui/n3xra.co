@@ -28,6 +28,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/site-nav.css">
+  <link rel="stylesheet" href="./assets/site-intro.css?v=2">
+  <script src="./assets/site-nav.js" defer></script>
   <style>
     :root {
       --ink: #0b1016;
@@ -70,14 +73,6 @@
       max-width: 100%;
     }
 
-    .site-hero {
-      color: #fff;
-      background:
-        radial-gradient(circle at 50% -12%, rgba(40, 173, 255, 0.16), transparent 34rem),
-        linear-gradient(180deg, #101012 0%, #050506 100%);
-    }
-
-    .hero-inner,
     .section-inner,
     .footer-inner {
       width: min(1120px, calc(100vw - 2rem));
@@ -99,27 +94,6 @@
 
     .button:hover {
       transform: translateY(-1px);
-    }
-
-    .hero-inner {
-      padding: clamp(1.2rem, 3vw, 2.2rem) 0 clamp(1.4rem, 3.5vw, 2.5rem);
-      display: grid;
-      place-items: center;
-      text-align: center;
-    }
-
-    .hero-copy {
-      width: min(920px, 100%);
-      display: grid;
-      justify-items: center;
-      gap: clamp(1.05rem, 2.6vw, 1.65rem);
-    }
-
-    .hero-mark {
-      width: min(460px, 78vw);
-      filter:
-        drop-shadow(0 0 28px rgba(22, 185, 237, 0.22))
-        drop-shadow(0 32px 60px rgba(0, 0, 0, 0.35));
     }
 
     .eyebrow {
@@ -531,15 +505,39 @@
         flex-direction: column;
       }
     }
+
   </style>
 </head>
 <body>
-  <header class="site-hero">
-    <section class="hero-inner" aria-label="N3XRA">
-      <div class="hero-copy">
-        <img class="hero-mark" src="./assets/n3xra_logo_transparent.png" alt="N3XRA">
+  <div class="entry-splash" aria-hidden="true" data-entry-splash>
+    <img src="./assets/n3xra_logo_transparent.png" alt="">
+  </div>
+  <script src="./assets/site-intro.js?v=2"></script>
+
+  <header class="site-topbar">
+    <div class="site-topbar-inner">
+      <div class="site-topbar-row">
+        <a class="site-brand" href="/" aria-label="N3XRA home">
+          <img src="./assets/n3xra_logo_transparent.png" alt="N3XRA">
+        </a>
+        <nav class="site-desktop-menu" aria-label="Primary">
+          <a class="site-menu-link" href="/projects/">Projects</a>
+          <a class="site-menu-link" href="/ai-music-generator/">AI Music Generator</a>
+        </nav>
+        <button class="site-menu-toggle" type="button" aria-expanded="false" aria-controls="home-mobile-menu" aria-label="Open menu" data-site-menu-toggle>
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
-    </section>
+      <nav class="site-mobile-menu" id="home-mobile-menu" aria-label="Mobile primary" hidden>
+        <div class="site-mobile-menu-head">
+          <p class="site-mobile-menu-title">Navigate</p>
+        </div>
+        <a class="site-menu-link" href="/projects/">Projects</a>
+        <a class="site-menu-link" href="/ai-music-generator/">AI Music Generator</a>
+      </nav>
+    </div>
   </header>
 
   <main>
